@@ -17,20 +17,27 @@ router.get('/', (req, res) => {
     });
   });
 
-  anotherArray.forEach(item => {
+  const newArray2 = anotherArray.slice(anotherArray.length - 5);
+
+  newArray2.forEach(item => {
 
     fs.readFile(item, (err, data) => {
       if (err) {
         console.log(err);
       } else {
-        console.log('File contents:', JSON.parse(data));
+        console.log('File contents are:', JSON.parse(data));
       }
     })
 
   });
 
 
-  return res.send('we will see here messages');
+
+
+
+
+
+  return res.send(`Ok!`);
 
 });
 
