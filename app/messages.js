@@ -1,24 +1,35 @@
-
 const express = require('express');
 const fs = require("fs");
 let newTerm = new Date().toISOString();
 
 const fileName = `./fileForWrite/${newTerm}`;
+const path = './fileForWrite'
 let data = [];
-
-
+let anotherArray = [];
 
 const router = express.Router();
 
-
 router.get('/', (req, res) => {
+  fs.readdir(path, (err, data) => {
+    data.forEach(info => {
+      let newPath = `${path}/${info}`
+      anotherArray.push(newPath);
+    });
+  });
 
-  // fs.readdir(fileName, (err, data) => {
-  //   data.forEach(info => {
-  //     console.log(fileName + '/' + info);
-  //     console.log(data);
-  //   });
-  // })
+  anotherArray.forEach(item => {
+
+    fs.readFile(item, (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('File contents:', JSON.parse(data));
+      }
+    })
+
+  });
+
+
   return res.send('we will see here messages');
 
 });
@@ -30,14 +41,10 @@ router.post('/', (req, res) => {
   }
 
   data.push(message);
-  console.log(data, fileName);
   fs.writeFileSync(fileName, JSON.stringify(data));
-  
+
   return res.send(`Date:${message.date}${message.description} `);
 })
-
-
-
 
 
 module.exports = router;
