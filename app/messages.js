@@ -5,6 +5,7 @@ let newTerm = new Date().toISOString();
 const fileName = `./fileForWrite/${newTerm}`;
 const path = './fileForWrite'
 let data = [];
+let data2 = [];
 let anotherArray = [];
 
 const router = express.Router();
@@ -12,6 +13,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   fs.readdir(path, (err, data) => {
     data.forEach(info => {
+      data2.push(info)
       let newPath = `${path}/${info}`
       anotherArray.push(newPath);
     });
@@ -26,18 +28,13 @@ router.get('/', (req, res) => {
         console.log(err);
       } else {
         console.log('File contents are:', JSON.parse(data));
-      }
-    })
 
+      }
+
+    })
   });
 
-
-
-
-
-
-
-  return res.send(`Ok!`);
+  return res.send({"message": data});
 
 });
 
@@ -48,9 +45,10 @@ router.post('/', (req, res) => {
   }
 
   data.push(message);
+
   fs.writeFileSync(fileName, JSON.stringify(data));
 
-  return res.send(`Date:${message.date}${message.description} `);
+  return res.send(`Date:${message.date}Description:${message.description} `);
 })
 
 
